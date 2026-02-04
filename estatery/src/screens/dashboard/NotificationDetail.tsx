@@ -39,7 +39,7 @@ export default function NotificationDetail() {
       <div className="mx-auto max-w-2xl space-y-6">
         <Link
           to="/dashboard/notifications"
-          className="inline-flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[#21438D]"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[var(--logo)]"
         >
           <ArrowLeft className="size-4" />
           Back to Notifications
@@ -52,7 +52,7 @@ export default function NotificationDetail() {
                 notification.unread ? "bg-[#e0f2fe]" : "bg-[#f1f5f9]"
               )}
             >
-              <Icon className="size-7 text-[#0369a1]" />
+              <Icon className="size-7 text-[var(--logo)]" />
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-xs text-[#64748b]">{notification.time}</p>

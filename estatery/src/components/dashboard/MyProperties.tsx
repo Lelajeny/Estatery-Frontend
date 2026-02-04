@@ -44,7 +44,7 @@ export function MyProperties() {
               />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate font-medium text-[#1e293b] group-hover:text-[#21438D]">
+              <p className="truncate font-medium text-[#1e293b] group-hover:text-[var(--logo)]">
                 {prop.name}
               </p>
               <p className="truncate text-sm text-[#64748b]">{prop.location}</p>

@@ -68,7 +68,7 @@ export default function VerifyOTP() {
         <div className="w-full max-w-[420px] rounded-2xl bg-white p-8 shadow-lg">
           <div className="mb-6 flex justify-center">
             <div className="flex size-16 items-center justify-center rounded-full border-2 border-white bg-[#E8F4FC] shadow-sm">
-              <Mail className="size-8 text-[#21438D]" />
+              <Mail className="size-8 text-[var(--logo)]" />
             </div>
           </div>
           <h1 className="text-center text-2xl font-bold text-[#1e293b]">
@@ -92,7 +92,7 @@ export default function VerifyOTP() {
                   onKeyDown={(e) => handleKeyDown(i, e)}
                   className={cn(
                     "h-12 w-11 rounded-lg border bg-white text-center text-lg font-semibold transition-colors",
-                    "border-[#d1d5db] focus:border-[#21438D] focus:ring-2 focus:ring-[#21438D]/20 focus:outline-none"
+                    "border-[#d1d5db] focus:border-[var(--logo)] focus:ring-2 focus:ring-[var(--logo)]/20 focus:outline-none"
                   )}
                   aria-label={`Digit ${i + 1}`}
                 />
@@ -100,7 +100,7 @@ export default function VerifyOTP() {
             </div>
             <Button
               type="submit"
-              className="w-full rounded-lg bg-[#21438D] text-white hover:bg-[#1a3580]"
+              className="w-full rounded-lg bg-[var(--logo)] text-white hover:bg-[var(--logo-hover)]"
               size="lg"
             >
               Verify
@@ -116,7 +116,7 @@ export default function VerifyOTP() {
               Resend code
             </button>
             {resendSeconds > 0 && (
-              <span className="ml-1 font-medium text-[#21438D]">
+              <span className="ml-1 font-medium text-[var(--logo)]">
                 in 00:{String(resendSeconds).padStart(2, "0")}
               </span>
             )}

@@ -69,7 +69,7 @@ export function RecentPayments() {
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-[#e2e8f0] bg-white py-2 pl-9 pr-3 text-sm text-[#1e293b] placeholder:text-[#94a3b8] focus:border-[#21438D] focus:outline-none focus:ring-2 focus:ring-[#21438D]/20"
+            className="w-full rounded-lg border border-[#e2e8f0] bg-white py-2 pl-9 pr-3 text-sm text-[#1e293b] placeholder:text-[#94a3b8] focus:border-[var(--logo)] focus:outline-none focus:ring-2 focus:ring-[var(--logo)]/20"
             aria-label="Search payments"
           />
         </div>
@@ -123,7 +123,7 @@ export function RecentPayments() {
                 </td>
                 <td className="py-3 pr-4">
                   <div className="flex items-center gap-2">
-                    <div className="flex size-8 items-center justify-center rounded-full bg-[#e0f2fe] text-xs font-medium text-[#0369a1]">
+                    <div className="flex size-8 items-center justify-center rounded-full bg-[var(--logo-muted)] text-xs font-medium text-[var(--logo)]">
                       {p.customer.slice(0, 1)}
                     </div>
                     {p.customer}

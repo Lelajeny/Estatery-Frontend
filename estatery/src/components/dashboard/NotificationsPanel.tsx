@@ -44,7 +44,7 @@ export function NotificationsPanel({ open, onClose }: NotificationsPanelProps) {
           <button
             type="button"
             onClick={markAllRead}
-            className="text-sm font-medium text-[#21438D] hover:underline"
+            className="text-sm font-medium text-[var(--logo)] hover:underline"
           >
             Mark all as read
           </button>
@@ -63,7 +63,7 @@ export function NotificationsPanel({ open, onClose }: NotificationsPanelProps) {
                 )}
               >
                 <div className="relative shrink-0">
-                  <div className="flex size-10 items-center justify-center rounded-full bg-[#e0f2fe] text-[#0369a1]">
+                  <div className="flex size-10 items-center justify-center rounded-full bg-[var(--logo-muted)] text-[var(--logo)]">
                     <Icon className="size-5" />
                   </div>
                   {n.unread && (
@@ -82,7 +82,7 @@ export function NotificationsPanel({ open, onClose }: NotificationsPanelProps) {
           <Link
             to="/dashboard/notifications"
             onClick={onClose}
-            className="text-sm font-medium text-[#21438D] hover:underline"
+            className="text-sm font-medium text-[var(--logo)] hover:underline"
           >
             View all notifications
           </Link>

@@ -58,9 +58,9 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
     cn(
       "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
       isActive
-        ? "bg-[#e0f2fe] text-[#21438D]"
+        ? "bg-[var(--logo-muted)] text-[var(--logo)]"
         : "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#1e293b]",
-      isActive && "border-l-[3px] border-l-[#21438D] rounded-l-none pl-[calc(0.75rem+3px)]"
+      isActive && "border-l-[3px] border-l-[var(--logo)] rounded-l-none pl-[calc(0.75rem+3px)]"
     );
 
   return (
@@ -71,7 +71,7 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
       )}
     >
       <div className="flex h-14 items-center gap-2 border-b border-[#e2e8f0] px-3">
-        <Image src="/Logo.png" alt="" width={32} height={32} className="shrink-0 rounded-lg object-contain" />
+        <Image src="/logo.png" alt="" width={32} height={32} className="shrink-0 rounded-lg object-contain" />
         {!collapsed && <span className="truncate text-base font-bold text-[#1e293b]">{BRAND}</span>}
         <button
           type="button"

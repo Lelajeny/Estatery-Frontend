@@ -22,7 +22,7 @@ export function TopBar({ user = { name: "Sarah Lee", role: "Agent" } }: TopBarPr
           type="button"
           className={cn(
             "flex w-full max-w-xs sm:max-w-sm items-center gap-2 rounded-lg border bg-[#f8fafc] px-3 py-2 transition-all duration-200 text-left",
-            searchOpen ? "border-[#21438D] ring-2 ring-[#21438D]/20" : "border-[#e2e8f0] hover:border-[#cbd5e1]"
+            searchOpen ? "border-[var(--logo)] ring-2 ring-[var(--logo)]/20" : "border-[#e2e8f0] hover:border-[#cbd5e1]"
           )}
           onClick={() => setSearchOpen(true)}
           aria-label="Quick search"
@@ -46,7 +46,7 @@ export function TopBar({ user = { name: "Sarah Lee", role: "Agent" } }: TopBarPr
             <span className="absolute right-1 top-1 size-2 rounded-full bg-[#ef4444]" aria-hidden />
           </button>
           <div className="flex items-center gap-3 rounded-lg pl-2">
-          <div className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-[#e0f2fe] text-sm font-medium text-[#0369a1]">
+          <div className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-[var(--logo-muted)] text-sm font-medium text-[var(--logo)]">
             {user.avatar ? (
               <img src={user.avatar} alt="" className="size-full object-cover" />
             ) : (

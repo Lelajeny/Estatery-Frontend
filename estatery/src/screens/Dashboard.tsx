@@ -65,7 +65,7 @@ export default function Dashboard() {
                   <button
                     type="button"
                     onClick={handleRefresh}
-                    className="flex size-8 items-center justify-center rounded text-[#21438D] transition-colors hover:bg-[#e0f2fe] hover:text-[#1a3580]"
+                    className="flex size-8 items-center justify-center rounded text-[var(--logo)] transition-colors hover:bg-[var(--logo-muted)] hover:text-[var(--logo-hover)]"
                     aria-label="Refresh"
                   >
                     <RefreshCw className={cn("size-4", refreshing && "animate-spin")} />
@@ -73,7 +73,7 @@ export default function Dashboard() {
                 </div>
                 <Button
                   onClick={handleExport}
-                  className="shrink-0 rounded-lg bg-[#21438D] text-white hover:bg-[#1a3580]"
+                  className="shrink-0 rounded-lg bg-[var(--logo)] text-white hover:bg-[var(--logo-hover)]"
                 >
                   <Download className="mr-2 size-4" />
                   Export CSV

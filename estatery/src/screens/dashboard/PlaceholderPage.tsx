@@ -17,5 +17,7 @@ export function PlaceholderPage({ title, description }: PlaceholderPageProps) {
         <p className="mt-6 text-sm text-[#94a3b8]">This page is under construction.</p>
       </div>
     </DashboardLayout>
+
+    
   );
 }

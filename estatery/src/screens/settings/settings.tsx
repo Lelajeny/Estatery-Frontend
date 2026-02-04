@@ -38,7 +38,7 @@ export default function Settings() {
           </Button>
           <Button
             type="button"
-            className="bg-[#21438D] text-white hover:bg-[#1a3580]"
+            className="bg-[var(--logo)] text-white hover:bg-[var(--logo-hover)]"
           >
             Save Change
           </Button>
@@ -63,7 +63,7 @@ export default function Settings() {
                     className={cn(
                       "relative w-full rounded-md px-3 py-2.5 text-left text-sm font-medium transition-colors",
                       isActive
-                        ? "bg-[#e0f2fe] text-[#1e293b] border-l-[3px] border-l-[#21438D] pl-[calc(0.75rem+3px)]"
+                        ? "bg-[var(--logo-muted)] text-[#1e293b] border-l-[3px] border-l-[var(--logo)] pl-[calc(0.75rem+3px)]"
                         : "text-[#64748b] hover:bg-[#e2e8f0] hover:text-[#1e293b]"
                     )}
                   >

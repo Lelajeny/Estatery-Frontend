@@ -8,7 +8,7 @@ export function AuthCardHeader() {
   return (
     <header className="flex justify-center pt-8">
       <Link to="/" className="flex items-center gap-2">
-        <Image src="/Logo.png" alt="" width={40} height={40} className="rounded-lg object-contain" />
+        <Image src="/logo.png" alt="" width={40} height={40} className="rounded-lg object-contain" />
         <span className="text-xl font-bold text-[#1e293b]">{BRAND}</span>
       </Link>
     </header>
@@ -22,15 +22,15 @@ export function AuthCardFooter() {
         © {new Date().getFullYear()} {BRAND}. All right reserved.
       </p>
       <nav className="flex items-center gap-6">
-        <Link to="/privacy" className="flex items-center gap-1.5 text-sm text-[#64748b] hover:text-[#21438D]">
+        <Link to="/privacy" className="flex items-center gap-1.5 text-sm text-[#64748b] hover:text-[var(--logo)]">
           <Lock className="size-4" />
           Privacy
         </Link>
-        <Link to="/terms" className="flex items-center gap-1.5 text-sm text-[#64748b] hover:text-[#21438D]">
+        <Link to="/terms" className="flex items-center gap-1.5 text-sm text-[#64748b] hover:text-[var(--logo)]">
           <FileText className="size-4" />
           Terms
         </Link>
-        <Link to="/help" className="flex items-center gap-1.5 text-sm text-[#64748b] hover:text-[#21438D]">
+        <Link to="/help" className="flex items-center gap-1.5 text-sm text-[#64748b] hover:text-[var(--logo)]">
           <HelpCircle className="size-4" />
           Get help
         </Link>

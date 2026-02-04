@@ -69,7 +69,7 @@ export default function PropertyDetail() {
           <div className="mx-auto max-w-6xl space-y-6">
             <Link
               to="/dashboard"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[#21438D]"
+              className="inline-flex items-center gap-2 text-sm font-medium text-[#64748b] hover:text-[var(--logo)]"
             >
               <ArrowLeft className="size-4" />
               Back to Dashboard
@@ -90,7 +90,7 @@ export default function PropertyDetail() {
                   <MapPin className="size-4 shrink-0" />
                   {property.location}
                 </p>
-                <p className="mt-4 text-2xl font-bold text-[#21438D]">
+                <p className="mt-4 text-2xl font-bold text-[var(--logo)]">
                   {property.price}
                   <span className="text-base font-normal text-[#64748b]"> per month</span>
                 </p>
@@ -140,7 +140,7 @@ export default function PropertyDetail() {
                       />
                     </div>
                     <div className="p-4">
-                      <p className="font-medium text-[#1e293b] group-hover:text-[#21438D] truncate">
+                      <p className="font-medium text-[#1e293b] group-hover:text-[var(--logo)] truncate">
                         {prop.name}
                       </p>
                       <p className="mt-0.5 truncate text-sm text-[#64748b]">{prop.location}</p>

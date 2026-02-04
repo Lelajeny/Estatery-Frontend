@@ -31,7 +31,7 @@ export default function Notifications() {
                 )}
               >
                 <div className="relative shrink-0">
-                  <div className="flex size-12 items-center justify-center rounded-full bg-[#e0f2fe] text-[#0369a1]">
+                  <div className="flex size-12 items-center justify-center rounded-full bg-[var(--logo-muted)] text-[var(--logo)]">
                     <Icon className="size-6" />
                   </div>
                   {n.unread && (

@@ -117,7 +117,7 @@ export function SearchOverlay({ open, onClose, initialQuery = "" }: SearchOverla
                 type="button"
                 className={cn(
                   "flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors",
-                  selectedIndex === 0 ? "bg-[#e0f2fe] text-[#21438D]" : "text-[#1e293b] hover:bg-[#f8fafc]"
+                  selectedIndex === 0 ? "bg-[var(--logo-muted)] text-[var(--logo)]" : "text-[#1e293b] hover:bg-[#f8fafc]"
                 )}
                 onClick={() => inputRef.current?.focus()}
                 onMouseEnter={() => setSelectedIndex(0)}
@@ -134,13 +134,13 @@ export function SearchOverlay({ open, onClose, initialQuery = "" }: SearchOverla
                   type="button"
                   className={cn(
                     "flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors",
-                    selectedIndex === idx ? "bg-[#e0f2fe] text-[#21438D]" : "text-[#1e293b] hover:bg-[#f8fafc]"
+                    selectedIndex === idx ? "bg-[var(--logo-muted)] text-[var(--logo)]" : "text-[#1e293b] hover:bg-[#f8fafc]"
                   )}
                   onClick={() => handleSelectResult(r)}
                   onMouseEnter={() => setSelectedIndex(idx)}
                 >
                   {r.avatar ? (
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#e0f2fe] text-xs font-medium text-[#0369a1]">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--logo-muted)] text-xs font-medium text-[var(--logo)]">
                       {r.avatar}
                     </div>
                   ) : (

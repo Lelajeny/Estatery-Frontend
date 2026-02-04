@@ -25,7 +25,7 @@ export default function ForgotPassword() {
         <div className="w-full max-w-[420px] rounded-2xl bg-white p-8 shadow-lg">
           <div className="mb-6 flex justify-center">
             <div className="flex size-16 items-center justify-center rounded-full border-2 border-white bg-[#dcfce7] shadow-sm">
-              <Lock className="size-8 text-[#21438D]" />
+              <Lock className="size-8 text-[var(--logo)]" />
             </div>
           </div>
           <h1 className="text-center text-2xl font-bold text-[#1e293b]">
@@ -53,7 +53,7 @@ export default function ForgotPassword() {
             </div>
             <Button
               type="submit"
-              className="w-full rounded-lg bg-[#21438D] text-white hover:bg-[#1a3580]"
+              className="w-full rounded-lg bg-[var(--logo)] text-white hover:bg-[var(--logo-hover)]"
               size="lg"
             >
               Forgot Password

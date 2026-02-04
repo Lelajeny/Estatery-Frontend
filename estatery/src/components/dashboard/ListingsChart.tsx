@@ -69,7 +69,7 @@ export function ListingsChart() {
             <select
               value={range}
               onChange={(e) => setRange(e.target.value as Range)}
-              className="appearance-none rounded-lg border border-[#e2e8f0] bg-white py-2 pl-3 pr-8 text-sm text-[#1e293b] transition-colors hover:bg-[#f8fafc] focus:border-[#21438D] focus:outline-none focus:ring-2 focus:ring-[#21438D]/20"
+              className="appearance-none rounded-lg border border-[#e2e8f0] bg-white py-2 pl-3 pr-8 text-sm text-[#1e293b] transition-colors hover:bg-[#f8fafc] focus:border-[var(--logo)] focus:outline-none focus:ring-2 focus:ring-[var(--logo)]/20"
             >
               <option value="weekly">Weekly</option>
               <option value="monthly">Monthly</option>
@@ -92,7 +92,7 @@ export function ListingsChart() {
       <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-baseline gap-2 text-sm">
           <span className="text-xl font-bold text-[#1e293b]">834</span>
-          <span className="flex items-center gap-0.5 font-medium text-[#21438D]">
+          <span className="flex items-center gap-0.5 font-medium text-[var(--logo)]">
             <TrendingUp className="size-4" />
             10,5%
           </span>
@@ -164,7 +164,7 @@ export function ListingsChart() {
                   <div
                     className={cn(
                       "flex h-full w-full max-w-[64px] gap-0.5 sm:gap-1 items-end justify-center rounded-t transition-all duration-300",
-                      hoveredIndex === i && "ring-2 ring-[#21438D]/40 ring-offset-2 ring-offset-white"
+                      hoveredIndex === i && "ring-2 ring-[var(--logo)]/40 ring-offset-2 ring-offset-white"
                     )}
                   >
                     <div

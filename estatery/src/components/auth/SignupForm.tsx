@@ -102,7 +102,7 @@ export function SignupForm() {
       <div className="w-full max-w-[380px]">
         <div className="mb-8 flex flex-col items-center text-center">
           <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-[#E8F4FC]">
-            <User className="size-7 text-[#0369a1]" strokeWidth={2} />
+            <User className="size-7 text-[var(--logo)]" strokeWidth={2} />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-black sm:text-3xl">
             Create New Account
@@ -209,7 +209,7 @@ export function SignupForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded text-[#6b7280] hover:text-black focus:outline-none focus:ring-2 focus:ring-[#0369a1] focus:ring-offset-2"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded text-[#6b7280] hover:text-black focus:outline-none focus:ring-2 focus:ring-[var(--logo)] focus:ring-offset-2"
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 tabIndex={0}
               >
@@ -255,7 +255,7 @@ export function SignupForm() {
             </div>
             <Link
               to="/auth/login"
-              className="text-sm font-medium text-[#2563eb] hover:underline focus:outline-none focus:ring-2 focus:ring-[#0369a1] focus:ring-offset-2 rounded"
+              className="text-sm font-medium text-[#2563eb] hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--logo)] focus:ring-offset-2 rounded"
             >
               Already have an account?
             </Link>
@@ -268,7 +268,7 @@ export function SignupForm() {
               (nameError || emailError || passwordError)
                 ? "bg-[#1d4ed8] hover:bg-[#1e40af]"
                 : hasTyped
-                  ? "bg-[#21438D] hover:bg-[#1a3580]"
+                  ? "bg-[var(--logo)] hover:bg-[var(--logo-hover)]"
                   : "bg-[#97ADDE] hover:bg-[#7d9ad4]"
             )}
             size="lg"

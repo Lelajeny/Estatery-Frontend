@@ -66,7 +66,7 @@ export function General() {
         </div>
       </section>
 
-        <hr className="border-t my-10 border-[#e2e8f0]"/>   
+        <hr className="border-t my-10 border-[#e2e8f0] -mx-6" />   
 
       {/* Address  */}
       <section className="flex flex-col gap-6 pt-10 md:flex-row md:gap-8">

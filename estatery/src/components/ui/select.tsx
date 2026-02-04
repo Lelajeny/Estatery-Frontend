@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +12,7 @@ type SelectContextValue = {
   registerLabel: (value: string, label: string) => void;
   open: boolean;
   setOpen: (open: boolean) => void;
+  triggerRef: React.RefObject<HTMLButtonElement | null>;
 };
 
 const SelectContext = React.createContext<SelectContextValue | null>(null);
@@ -40,6 +42,7 @@ function Select({
   const [displayLabel, setDisplayLabel] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const labelsRef = React.useRef<Record<string, string>>({});
+  const triggerRef = React.useRef<HTMLButtonElement | null>(null);
 
   const isControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : uncontrolledValue;
@@ -76,6 +79,7 @@ function Select({
       registerLabel,
       open,
       setOpen,
+      triggerRef,
     }),
     [value, displayLabel, handleValueChange, registerLabel, open]
   );
@@ -91,8 +95,7 @@ type SelectTriggerProps = React.HTMLAttributes<HTMLButtonElement>;
 
 const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(
   ({ className, children, ...props }, ref) => {
-    const { value, open, setOpen } = useSelectContext();
-    const triggerRef = React.useRef<HTMLButtonElement>(null);
+    const { value, open, setOpen, triggerRef } = useSelectContext();
 
     React.useEffect(() => {
       const handleClickOutside = (e: MouseEvent) => {
@@ -107,7 +110,7 @@ const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
       }
-    }, [open, setOpen]);
+    }, [open, setOpen, triggerRef]);
 
     return (
       <button
@@ -143,21 +146,62 @@ type SelectContentProps = React.HTMLAttributes<HTMLDivElement>;
 
 const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(
   ({ className, children, ...props }, ref) => {
-    const { open } = useSelectContext();
-    if (!open) return null;
-    return (
+    const { open, triggerRef } = useSelectContext();
+    const [position, setPosition] = React.useState<{
+      top: number;
+      left: number;
+      width: number;
+    } | null>(null);
+
+    const updatePosition = React.useCallback(() => {
+      if (!triggerRef.current) return;
+      const rect = triggerRef.current.getBoundingClientRect();
+      setPosition({
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+      });
+    }, [triggerRef]);
+
+    React.useLayoutEffect(() => {
+      if (!open || typeof document === "undefined") return;
+      updatePosition();
+      window.addEventListener("scroll", updatePosition, true);
+      window.addEventListener("resize", updatePosition);
+      return () => {
+        window.removeEventListener("scroll", updatePosition, true);
+        window.removeEventListener("resize", updatePosition);
+      };
+    }, [open, updatePosition]);
+
+    React.useEffect(() => {
+      if (!open) setPosition(null);
+    }, [open]);
+
+    if (!open || typeof document === "undefined") return null;
+    if (!position) return null;
+
+    const content = (
       <div
         ref={ref}
         className={cn(
-          "absolute z-50 mt-1 max-h-60 min-w-[8rem] overflow-auto rounded-lg border border-[#e2e8f0] bg-white p-1 shadow-lg",
+          "fixed z-[100] max-h-60 min-w-[8rem] overflow-auto rounded-lg border border-[#e2e8f0] bg-white p-1 shadow-lg",
           className
         )}
+        style={{
+          top: position.top,
+          left: position.left,
+          width: position.width,
+          minWidth: "8rem",
+        }}
         role="listbox"
         {...props}
       >
         {children}
       </div>
     );
+
+    return createPortal(content, document.body);
   }
 );
 SelectContent.displayName = "SelectContent";
@@ -183,7 +227,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
         aria-selected={isSelected}
         className={cn(
           "relative flex w-full cursor-pointer select-none items-center rounded-md py-2 pl-3 pr-8 text-sm outline-none hover:bg-[#f1f5f9] focus:bg-[#f1f5f9]",
-          isSelected && "bg-[#e0f2fe] text-[#21438D]",
+          isSelected && "bg-[var(--logo-muted)] text-[var(--logo)]",
           className
         )}
         onClick={() => onValueChange(value, label)}
