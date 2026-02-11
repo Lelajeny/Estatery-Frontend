@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { UserProfileProvider } from "@/contexts/UserProfileContext";
+import { SettingsProvider } from "@/contexts/SettingsContext";
 import { PublicRoute, ProtectedRoute } from "@/components";
 
 // Lazy-load all screens – only the current route loads, cutting initial JS and TBT
@@ -40,6 +41,7 @@ export default function App() {
   return (
     <AuthProvider>
       <UserProfileProvider>
+        <SettingsProvider>
         <BrowserRouter>
           <Suspense fallback={<PageFallback />}>
             <Routes>
@@ -245,6 +247,7 @@ export default function App() {
             </Routes>
           </Suspense>
         </BrowserRouter>
+        </SettingsProvider>
       </UserProfileProvider>
     </AuthProvider>
   );

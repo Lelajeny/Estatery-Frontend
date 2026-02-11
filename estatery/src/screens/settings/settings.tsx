@@ -10,7 +10,10 @@ import { TimeLang } from "@/components/settings/time_lang";
 import { PaymentBilling } from "@/components/settings/payment-billing";
 import { TaxDuties } from "@/components/settings/tax-duties";
 import { PlanPricing } from "@/components/settings/plan-pricing";
+import { Password } from "@/components/settings/password";
+import { Notifications } from "@/components/settings/notifications";
 import { useUserProfile } from "@/contexts/UserProfileContext";
+import { useSettings } from "@/contexts/SettingsContext";
 import type { UserProfile } from "@/contexts/UserProfileContext";
 
 const SETTINGS_NAV = [
@@ -38,17 +41,22 @@ function copyProfile(p: UserProfile): UserProfile {
 export default function Settings() {
   const [activeSection, setActiveSection] = useState<string>("general");
   const { profile, updateProfile } = useUserProfile();
+  const { saveNotifications, revertNotifications } = useSettings();
   const [draft, setDraft] = useState<UserProfile>(() => copyProfile(profile));
   const [savedSnapshot, setSavedSnapshot] = useState<UserProfile>(() => copyProfile(profile));
+  const [passwordDraft, setPasswordDraft] = useState({ currentPassword: "", newPassword: "" });
   const [saveConfirmOpen, setSaveConfirmOpen] = useState(false);
   const [cancelConfirmOpen, setCancelConfirmOpen] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
   const prevSectionRef = useRef(activeSection);
 
-  // When switching into My Account, sync draft from current profile
   useEffect(() => {
     if (activeSection === "my-account" && prevSectionRef.current !== "my-account") {
       setDraft(copyProfile(profile));
       setSavedSnapshot(copyProfile(profile));
+    }
+    if (activeSection === "password" && prevSectionRef.current !== "password") {
+      setPasswordDraft({ currentPassword: "", newPassword: "" });
     }
     prevSectionRef.current = activeSection;
   }, [activeSection, profile]);
@@ -57,38 +65,69 @@ export default function Settings() {
     setDraft((prev) => ({ ...prev, ...partial }));
   };
 
+  const handleUpdatePasswordDraft = (partial: Partial<{ currentPassword: string; newPassword: string }>) => {
+    setPasswordDraft((prev) => ({ ...prev, ...partial }));
+  };
+
   const handleSaveConfirm = () => {
-    updateProfile(draft);
-    setSavedSnapshot(copyProfile(draft));
+    if (activeSection === "my-account") {
+      updateProfile(draft);
+      setSavedSnapshot(copyProfile(draft));
+    }
+    if (activeSection === "password") {
+      if (!passwordDraft.currentPassword || passwordDraft.newPassword.length < 8) return;
+      setPasswordDraft({ currentPassword: "", newPassword: "" });
+    }
+    if (activeSection === "notifications") {
+      saveNotifications();
+    }
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 2500);
     setSaveConfirmOpen(false);
   };
 
   const handleCancelConfirm = () => {
-    setDraft(copyProfile(savedSnapshot));
+    if (activeSection === "my-account") {
+      setDraft(copyProfile(savedSnapshot));
+    }
+    if (activeSection === "password") {
+      setPasswordDraft({ currentPassword: "", newPassword: "" });
+    }
+    if (activeSection === "notifications") {
+      revertNotifications();
+    }
     setCancelConfirmOpen(false);
   };
+
+  const sectionsWithChanges = ["my-account", "password", "notifications"];
+  const showSaveCancel = sectionsWithChanges.includes(activeSection);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-bold text-[#1e293b]">Settings</h1>
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            className="border-[#e2e8f0] bg-white text-[#1e293b] hover:bg-[#f8fafc]"
-            onClick={() => setCancelConfirmOpen(true)}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="button"
-            className="bg-[var(--logo)] text-white hover:bg-[var(--logo-hover)]"
-            onClick={() => setSaveConfirmOpen(true)}
-          >
-            Save Change
-          </Button>
-        </div>
+        {showSaveCancel && (
+          <div className="flex items-center gap-2">
+            {saveSuccess && (
+              <span className="text-sm font-medium text-green-600">Changes saved</span>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              className="border-[#e2e8f0] bg-white text-[#1e293b] hover:bg-[#f8fafc]"
+              onClick={() => setCancelConfirmOpen(true)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              className="bg-[var(--logo)] text-white hover:bg-[var(--logo-hover)]"
+              onClick={() => setSaveConfirmOpen(true)}
+            >
+              Save Change
+            </Button>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col overflow-hidden rounded-xl border border-[#e2e8f0] bg-white shadow-sm lg:flex-row">
@@ -129,6 +168,10 @@ export default function Settings() {
           {activeSection === "tax-duties" && <TaxDuties />}
           {activeSection === "link-account" && <Links />}
           {activeSection === "time-language" && <TimeLang />}
+          {activeSection === "password" && (
+            <Password draft={passwordDraft} onUpdateDraft={handleUpdatePasswordDraft} />
+          )}
+          {activeSection === "notifications" && <Notifications />}
         </div>
       </div>
 
@@ -140,7 +183,10 @@ export default function Settings() {
               Save your changes?
             </h3>
             <p className="mb-6 text-sm text-[#64748b]">
-              Are you sure you want to save changes? Your profile will be updated.
+              {activeSection === "password" &&
+              (!passwordDraft.currentPassword || passwordDraft.newPassword.length < 8)
+                ? "Please enter your current password and a new password (at least 8 characters)."
+                : "Are you sure you want to save changes?"}
             </p>
             <div className="flex justify-end gap-3">
               <Button
@@ -155,6 +201,10 @@ export default function Settings() {
                 type="button"
                 className="bg-[var(--logo)] text-white hover:bg-[var(--logo-hover)]"
                 onClick={handleSaveConfirm}
+                disabled={
+                  activeSection === "password" &&
+                  (!passwordDraft.currentPassword || passwordDraft.newPassword.length < 8)
+                }
               >
                 Yes, Save
               </Button>
