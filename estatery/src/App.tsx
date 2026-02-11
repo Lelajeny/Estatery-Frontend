@@ -1,244 +1,251 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { UserProfileProvider } from "@/contexts/UserProfileContext";
 import { PublicRoute, ProtectedRoute } from "@/components";
 
-import Login from "@/screens/auth/Login";
-import NotFound from "@/screens/NotFound";
-import Signup from "@/screens/auth/Signup";
-import ForgotPassword from "@/screens/auth/forgotPassword";
-import VerifyOTP from "@/screens/auth/VerifyOTP";
-import CreateNewPassword from "@/screens/auth/CreateNewPassword";
-import Dashboard from "@/screens/Dashboard";
-import PropertyDetail from "@/screens/dashboard/PropertyDetail";
-import PropertiesList from "@/screens/dashboard/PropertiesList";
-import Notifications from "@/screens/dashboard/Notifications";
-import NotificationDetail from "@/screens/dashboard/NotificationDetail";
-import { PlaceholderPage } from "@/screens/dashboard/PlaceholderPage";
-import { DashboardLayout } from "@/components/dashboard";
-import Settings from "@/screens/settings/settings";
-import Clients from "@/screens/clients/clients";
-import ClientDetail from "@/screens/clients/ClientDetail";
-import Messages from "@/screens/dashboard/Messages";
-import Calendar from "@/screens/dashboard/Calendar";
-import Leads from "@/screens/dashboard/Leads";
-import Discounts from "@/screens/dashboard/Discounts";
-import Analytics from "@/screens/dashboard/Analytics";
-import Agents from "@/screens/dashboard/Agents";
+// Lazy-load all screens – only the current route loads, cutting initial JS and TBT
+const Login = lazy(() => import("@/screens/auth/Login"));
+const Signup = lazy(() => import("@/screens/auth/Signup"));
+const ForgotPassword = lazy(() => import("@/screens/auth/forgotPassword"));
+const VerifyOTP = lazy(() => import("@/screens/auth/VerifyOTP"));
+const CreateNewPassword = lazy(() => import("@/screens/auth/CreateNewPassword"));
+const Dashboard = lazy(() => import("@/screens/Dashboard"));
+const PropertyDetail = lazy(() => import("@/screens/dashboard/PropertyDetail"));
+const PropertiesList = lazy(() => import("@/screens/dashboard/PropertiesList"));
+const Notifications = lazy(() => import("@/screens/dashboard/Notifications"));
+const NotificationDetail = lazy(() => import("@/screens/dashboard/NotificationDetail"));
+const PlaceholderPage = lazy(() => import("@/screens/dashboard/PlaceholderPage").then((m) => ({ default: m.PlaceholderPage })));
+const DashboardLayout = lazy(() => import("@/components/dashboard").then((m) => ({ default: m.DashboardLayout })));
+const Settings = lazy(() => import("@/screens/settings/settings"));
+const Clients = lazy(() => import("@/screens/clients/clients"));
+const ClientDetail = lazy(() => import("@/screens/clients/ClientDetail"));
+const Messages = lazy(() => import("@/screens/dashboard/Messages"));
+const Calendar = lazy(() => import("@/screens/dashboard/Calendar"));
+const Leads = lazy(() => import("@/screens/dashboard/Leads"));
+const Discounts = lazy(() => import("@/screens/dashboard/Discounts"));
+const Analytics = lazy(() => import("@/screens/dashboard/Analytics"));
+const Agents = lazy(() => import("@/screens/dashboard/Agents"));
+const NotFound = lazy(() => import("@/screens/NotFound"));
+
+function PageFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-white" aria-hidden>
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--logo)] border-t-transparent" />
+    </div>
+  );
+}
 
 export default function App() {
   return (
     <AuthProvider>
       <UserProfileProvider>
         <BrowserRouter>
-          <Routes>
-          {/* Redirect root to login */}
-          <Route path="/" element={<Navigate to="/auth/login" replace />} />
+          <Suspense fallback={<PageFallback />}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/auth/login" replace />} />
 
-          {/* Public auth screens */}
-          <Route
-            path="/auth/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
+              <Route
+                path="/auth/login"
+                element={
+                  <PublicRoute>
+                    <Login />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/auth/Signup"
+                element={
+                  <PublicRoute>
+                    <Signup />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/auth/forgot-password"
+                element={
+                  <PublicRoute>
+                    <ForgotPassword />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/auth/forgotPassword"
+                element={
+                  <PublicRoute>
+                    <ForgotPassword />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/auth/verify-otp"
+                element={
+                  <PublicRoute>
+                    <VerifyOTP />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/auth/create-new-password"
+                element={
+                  <PublicRoute>
+                    <CreateNewPassword />
+                  </PublicRoute>
+                }
+              />
 
-           <Route 
-           path="/auth/Signup"
-            element={
-             <PublicRoute>
-              <Signup />
-             </PublicRoute>
-            } /> 
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/properties/:id"
+                element={
+                  <ProtectedRoute>
+                    <PropertyDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/notifications"
+                element={
+                  <ProtectedRoute>
+                    <Notifications />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/notifications/:id"
+                element={
+                  <ProtectedRoute>
+                    <NotificationDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/properties"
+                element={
+                  <ProtectedRoute>
+                    <PropertiesList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/agents"
+                element={
+                  <ProtectedRoute>
+                    <Agents />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/clients/clients"
+                element={
+                  <ProtectedRoute>
+                    <Clients />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/clients/:clientId"
+                element={
+                  <ProtectedRoute>
+                    <ClientDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/analytics"
+                element={
+                  <ProtectedRoute>
+                    <Analytics />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/calendar"
+                element={
+                  <ProtectedRoute>
+                    <Calendar />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/messages"
+                element={
+                  <ProtectedRoute>
+                    <Messages />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/leads"
+                element={
+                  <ProtectedRoute>
+                    <Leads />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/transactions"
+                element={
+                  <ProtectedRoute>
+                    <PlaceholderPage title="Transactions" />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/discounts"
+                element={
+                  <ProtectedRoute>
+                    <Discounts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/settings/settings"
+                element={
+                  <ProtectedRoute>
+                    <DashboardLayout>
+                      <Settings />
+                    </DashboardLayout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/help"
+                element={
+                  <ProtectedRoute>
+                    <PlaceholderPage title="Help Center" />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/feedback"
+                element={
+                  <ProtectedRoute>
+                    <PlaceholderPage title="Feedback" />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/*"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
 
-          <Route
-            path="/auth/forgot-password"
-            element={
-              <PublicRoute>
-                <ForgotPassword />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/auth/forgotPassword"
-            element={
-              <PublicRoute>
-                <ForgotPassword />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/auth/verify-otp"
-            element={
-              <PublicRoute>
-                <VerifyOTP />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/auth/create-new-password"
-            element={
-              <PublicRoute>
-                <CreateNewPassword />
-              </PublicRoute>
-            }
-          />
-
-          {/* Dashboard (protected) */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/properties/:id"
-            element={
-              <ProtectedRoute>
-                <PropertyDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/notifications"
-            element={
-              <ProtectedRoute>
-                <Notifications />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/notifications/:id"
-            element={
-              <ProtectedRoute>
-                <NotificationDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/properties"
-            element={
-              <ProtectedRoute>
-                <PropertiesList />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/agents"
-            element={
-              <ProtectedRoute>
-                <Agents />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/clients/clients"
-            element={
-              <ProtectedRoute>
-                <Clients />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/clients/:clientId"
-            element={
-              <ProtectedRoute>
-                <ClientDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/analytics"
-            element={
-              <ProtectedRoute>
-                <Analytics />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/calendar"
-            element={
-              <ProtectedRoute>
-                <Calendar />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/messages"
-            element={
-              <ProtectedRoute>
-                <Messages />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/leads"
-            element={
-              <ProtectedRoute>
-                <Leads />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/transactions"
-            element={
-              <ProtectedRoute>
-                <PlaceholderPage title="Transactions" />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/discounts"
-            element={
-              <ProtectedRoute>
-                <Discounts />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings/settings"
-            element={
-              <ProtectedRoute>
-                <DashboardLayout>
-                  <Settings />
-                </DashboardLayout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/help"
-            element={
-              <ProtectedRoute>
-                <PlaceholderPage title="Help Center" />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/feedback"
-            element={
-              <ProtectedRoute>
-                <PlaceholderPage title="Feedback" />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard/*"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </UserProfileProvider>
-   </AuthProvider>
+    </AuthProvider>
   );
 }

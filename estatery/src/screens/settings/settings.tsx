@@ -7,6 +7,9 @@ import { General } from "@/components/settings/general";
 import { MyAccount } from "@/components/settings/myaccount";
 import { Links } from "@/components/settings/links";
 import { TimeLang } from "@/components/settings/time_lang";
+import { PaymentBilling } from "@/components/settings/payment-billing";
+import { TaxDuties } from "@/components/settings/tax-duties";
+import { PlanPricing } from "@/components/settings/plan-pricing";
 import { useUserProfile } from "@/contexts/UserProfileContext";
 import type { UserProfile } from "@/contexts/UserProfileContext";
 
@@ -118,9 +121,12 @@ export default function Settings() {
 
         <div className="min-w-0 flex-1 bg-white p-6">
           {activeSection === "general" && <General />}
+          {activeSection === "plan-pricing" && <PlanPricing />}
           {activeSection === "my-account" && (
             <MyAccount draft={draft} onUpdateDraft={handleUpdateDraft} />
           )}
+          {activeSection === "payment-billing" && <PaymentBilling />}
+          {activeSection === "tax-duties" && <TaxDuties />}
           {activeSection === "link-account" && <Links />}
           {activeSection === "time-language" && <TimeLang />}
         </div>

@@ -138,7 +138,7 @@ export function LoginForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded text-[#6b7280] hover:text-black focus:outline-none focus:ring-2 focus:ring-[var(--logo)] focus:ring-offset-2"
+                className="absolute right-2 top-1/2 flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded text-[#475569] hover:text-black focus:outline-none focus:ring-2 focus:ring-[var(--logo)] focus:ring-offset-2"
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 tabIndex={0}
               >
@@ -152,7 +152,7 @@ export function LoginForm() {
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
+            <label className="flex min-h-[44px] cursor-pointer items-center gap-2">
               <Checkbox
                 id="keep-login"
                 checked={keepLoggedIn}
@@ -162,17 +162,16 @@ export function LoginForm() {
                 aria-describedby="keep-login-label"
                 className="border-[#d1d5db]"
               />
-              <Label
+              <span
                 id="keep-login-label"
-                htmlFor="keep-login"
-                className="cursor-pointer text-sm font-normal text-black"
+                className="text-sm font-normal text-black"
               >
                 Keep me login
-              </Label>
-            </div>
+              </span>
+            </label>
             <Link
-              to="/auth/verify-otp"
-              className="text-sm font-medium text-[#2563eb] hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--logo)] focus:ring-offset-2 rounded"
+              to="/auth/forgot-password"
+              className="inline-flex min-h-[44px] items-center text-sm font-medium text-[#2563eb] hover:underline focus:outline-none focus:ring-2 focus:ring-[var(--logo)] focus:ring-offset-2 rounded"
             >
               Forgot Password?
             </Link>

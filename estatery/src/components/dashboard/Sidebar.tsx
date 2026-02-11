@@ -56,10 +56,10 @@ type SidebarProps = {
 export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     cn(
-      "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+      "relative flex min-h-[44px] min-w-[44px] items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200",
       isActive
-        ? "bg-[var(--logo-muted)] text-[var(--logo)]"
-        : "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#1e293b]",
+        ? "bg-[var(--logo-muted)] text-[#1976d2]"
+        : "text-[#475569] hover:bg-[#f1f5f9] hover:text-[#1e293b]",
       isActive && "border-l-[3px] border-l-[var(--logo)] rounded-l-none pl-[calc(0.75rem+3px)]"
     );
 
@@ -76,7 +76,7 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
         <button
           type="button"
           onClick={onToggle}
-          className="ml-auto flex size-8 shrink-0 items-center justify-center rounded-lg text-[#64748b] transition-colors hover:bg-[#e2e8f0] hover:text-[#1e293b]"
+          className="ml-auto flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg text-[#475569] transition-colors hover:bg-[#e2e8f0] hover:text-[#1e293b]"
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           <ChevronLeft
@@ -88,7 +88,7 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
       <nav className="flex flex-1 flex-col overflow-y-auto p-2">
         {/* Main Menu */}
         {!collapsed && (
-          <p className="mb-1.5 px-3 pt-1 text-xs font-medium uppercase tracking-wide text-[#94a3b8]">
+          <p className="mb-1.5 px-3 pt-1 text-xs font-medium uppercase tracking-wide text-[#64748b]">
             Main Menu
           </p>
         )}
@@ -103,7 +103,7 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
 
         {/* Sales Chanel */}
         {!collapsed && (
-          <p className="mb-1.5 mt-4 px-3 pt-1 text-xs font-medium uppercase tracking-wide text-[#94a3b8]">
+          <p className="mb-1.5 mt-4 px-3 pt-1 text-xs font-medium uppercase tracking-wide text-[#64748b]">
             Sales Chanel
           </p>
         )}
@@ -129,8 +129,8 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
               type="button"
               onClick={onLogoutClick}
               className={cn(
-                "relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                "text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#1e293b]"
+                "relative flex min-h-[44px] w-full items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200",
+                "text-[#475569] hover:bg-[#f1f5f9] hover:text-[#1e293b]"
               )}
               aria-label="Logout"
             >
