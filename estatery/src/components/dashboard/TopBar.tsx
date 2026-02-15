@@ -31,20 +31,20 @@ export function TopBar() {
 
   return (
     <>
-      <header className="flex h-14 shrink-0 items-center gap-4 border-b border-[#e2e8f0] bg-white px-4 transition-shadow duration-200 focus-within:shadow-sm">
+      <header className="flex h-11 shrink-0 items-center gap-3 border-b border-[#f1f5f9] bg-white px-3 transition-shadow duration-200 focus-within:shadow-sm">
         <button
           type="button"
           className={cn(
-            "flex w-full max-w-xs sm:max-w-sm items-center gap-2 rounded-lg border bg-[#f8fafc] px-3 py-2 transition-all duration-200 text-left",
+            "flex w-full max-w-xs sm:max-w-sm items-center gap-1.5 rounded-md border bg-[#f8fafc] px-2.5 py-1.5 transition-all duration-200 text-left",
             searchOpen ? "border-[var(--logo)] ring-2 ring-[var(--logo)]/20" : "border-[#e2e8f0] hover:border-[#cbd5e1]"
           )}
           onClick={() => setSearchOpen(true)}
           aria-label="Quick search"
         >
-          <Search className="size-4 shrink-0 text-[#64748b]" />
-          <span className="min-w-0 flex-1 truncate text-sm text-[#94a3b8]">Quick search...</span>
-          <LayoutGrid className="size-4 shrink-0 text-[#64748b]" />
-          <kbd className="hidden rounded border border-[#e2e8f0] bg-white px-1.5 py-0.5 text-xs text-[#64748b] sm:inline-block">
+          <Search className="size-3.5 shrink-0 text-[#64748b]" />
+          <span className="min-w-0 flex-1 truncate text-xs text-[#94a3b8]">Quick search...</span>
+          <LayoutGrid className="size-3.5 shrink-0 text-[#64748b]" />
+          <kbd className="hidden rounded border border-[#e2e8f0] bg-white px-1 py-0.5 text-[10px] text-[#64748b] sm:inline-block">
             K
           </kbd>
         </button>
@@ -53,19 +53,19 @@ export function TopBar() {
           <button
             type="button"
             onClick={() => setNotificationsOpen(true)}
-            className="relative flex size-9 items-center justify-center rounded-lg text-[#64748b] transition-colors hover:bg-[#f1f5f9] hover:text-[#1e293b]"
+            className="relative flex size-8 items-center justify-center rounded-md text-[#64748b] transition-colors hover:bg-[#f1f5f9] hover:text-[#1e293b]"
             aria-label="Notifications"
           >
-            <Bell className="size-4" />
+            <Bell className="size-3.5" />
             <span className="absolute right-1 top-1 size-2 rounded-full bg-[#ef4444]" aria-hidden />
           </button>
           <button
             type="button"
             onClick={() => setProfileOpen(true)}
-            className="flex items-center gap-3 rounded-lg pl-2 pr-1 py-1 transition-colors hover:bg-[#f1f5f9]"
+            className="flex items-center gap-2 rounded-md pl-1.5 pr-1 py-0.5 transition-colors hover:bg-[#f1f5f9]"
             aria-label="Open profile"
           >
-            <div className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-[var(--logo-muted)] text-sm font-medium text-[var(--logo)]">
+            <div className="flex size-7 items-center justify-center overflow-hidden rounded-full bg-[var(--logo-muted)] text-xs font-medium text-[var(--logo)]">
               {profile.avatar ? (
                 <img src={profile.avatar} alt="" className="size-full object-cover" />
               ) : (
@@ -73,8 +73,8 @@ export function TopBar() {
               )}
             </div>
             <div className="hidden min-w-0 sm:block text-left">
-              <p className="truncate text-sm font-medium text-[#1e293b]">{profile.name}</p>
-              <p className="truncate text-xs text-[#64748b]">{profile.role}</p>
+              <p className="truncate text-xs font-medium text-[#1e293b]">{profile.name}</p>
+              <p className="truncate text-[10px] text-[#64748b]">{profile.role}</p>
             </div>
           </button>
         </div>

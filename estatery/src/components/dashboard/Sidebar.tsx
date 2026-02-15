@@ -56,31 +56,31 @@ type SidebarProps = {
 export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     cn(
-      "relative flex min-h-[44px] min-w-[44px] items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200",
+      "relative flex min-h-[36px] min-w-[36px] items-center gap-2.5 rounded-md px-2.5 py-2 text-xs font-medium transition-all duration-200",
       isActive
         ? "bg-[var(--logo-muted)] text-[#1976d2]"
         : "text-[#475569] hover:bg-[#f1f5f9] hover:text-[#1e293b]",
-      isActive && "border-l-[3px] border-l-[var(--logo)] rounded-l-none pl-[calc(0.75rem+3px)]"
+      isActive && "border-l-2 border-l-[var(--logo)] rounded-l-none pl-[calc(0.625rem+2px)]"
     );
 
   return (
     <aside
       className={cn(
-        "flex flex-col border-r border-[#e2e8f0] bg-[#f8fafc] transition-all duration-300 ease-in-out",
+        "flex flex-col border-r border-[#f1f5f9] bg-[#f8fafc] transition-all duration-300 ease-in-out",
         collapsed ? "w-[72px]" : "w-[240px]"
       )}
     >
-      <div className="flex h-14 items-center gap-2 border-b border-[#e2e8f0] px-3">
-        <Image src="/logo.png" alt="" width={32} height={32} className="shrink-0 rounded-lg object-contain" />
-        {!collapsed && <span className="truncate text-base font-bold text-[#1e293b]">{BRAND}</span>}
+      <div className="flex h-11 items-center gap-2 border-b border-[#f1f5f9] px-2.5">
+        <Image src="/logo.png" alt="" width={28} height={28} className="shrink-0 rounded object-contain" />
+        {!collapsed && <span className="truncate text-sm font-semibold text-[#1e293b]">{BRAND}</span>}
         <button
           type="button"
           onClick={onToggle}
-          className="ml-auto flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg text-[#475569] transition-colors hover:bg-[#e2e8f0] hover:text-[#1e293b]"
+          className="ml-auto flex min-h-[36px] min-w-[36px] shrink-0 items-center justify-center rounded-md text-[#475569] transition-colors hover:bg-[#e2e8f0] hover:text-[#1e293b]"
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
-          <ChevronLeft
-            className={cn("size-5 transition-transform duration-200", collapsed && "rotate-180")}
+            <ChevronLeft
+            className={cn("size-4 transition-transform duration-200", collapsed && "rotate-180")}
           />
         </button>
       </div>
@@ -88,14 +88,14 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
       <nav className="flex flex-1 flex-col overflow-y-auto p-2">
         {/* Main Menu */}
         {!collapsed && (
-          <p className="mb-1.5 px-3 pt-1 text-xs font-medium uppercase tracking-wide text-[#64748b]">
+          <p className="mb-1 px-2.5 pt-1 text-[10px] font-medium uppercase tracking-wide text-[#94a3b8]">
             Main Menu
           </p>
         )}
         <div className="space-y-0.5">
           {mainNav.map((item) => (
             <NavLink key={item.to} to={item.to} className={navLinkClass} end={item.to === "/dashboard"}>
-              <item.icon className="size-5 shrink-0" />
+              <item.icon className="size-4 shrink-0" />
               {!collapsed && <span className="truncate">{item.label}</span>}
             </NavLink>
           ))}
@@ -103,14 +103,14 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
 
         {/* Sales Chanel */}
         {!collapsed && (
-          <p className="mb-1.5 mt-4 px-3 pt-1 text-xs font-medium uppercase tracking-wide text-[#64748b]">
+          <p className="mb-1 mt-3 px-2.5 pt-1 text-[10px] font-medium uppercase tracking-wide text-[#94a3b8]">
             Sales Chanel
           </p>
         )}
         <div className="space-y-0.5">
           {salesNav.map((item) => (
             <NavLink key={item.to} to={item.to} className={navLinkClass}>
-              <item.icon className="size-5 shrink-0" />
+              <item.icon className="size-4 shrink-0" />
               {!collapsed && <span className="truncate">{item.label}</span>}
             </NavLink>
           ))}
@@ -120,7 +120,7 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
         <div className="mt-auto space-y-0.5 pt-4">
           {bottomNav.map((item) => (
             <NavLink key={item.to} to={item.to} className={navLinkClass}>
-              <item.icon className="size-5 shrink-0" />
+              <item.icon className="size-4 shrink-0" />
               {!collapsed && <span className="truncate">{item.label}</span>}
             </NavLink>
           ))}
@@ -129,12 +129,12 @@ export function Sidebar({ collapsed, onToggle, onLogoutClick }: SidebarProps) {
               type="button"
               onClick={onLogoutClick}
               className={cn(
-                "relative flex min-h-[44px] w-full items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200",
+                "relative flex min-h-[36px] w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-xs font-medium transition-all duration-200",
                 "text-[#475569] hover:bg-[#f1f5f9] hover:text-[#1e293b]"
               )}
               aria-label="Logout"
             >
-              <LogOut className="size-5 shrink-0" />
+              <LogOut className="size-4 shrink-0" />
               {!collapsed && <span className="truncate">Logout</span>}
             </button>
           )}

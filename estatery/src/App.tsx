@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { UserProfileProvider } from "@/contexts/UserProfileContext";
 import { SettingsProvider } from "@/contexts/SettingsContext";
@@ -16,7 +16,6 @@ const PropertyDetail = lazy(() => import("@/screens/dashboard/PropertyDetail"));
 const PropertiesList = lazy(() => import("@/screens/dashboard/PropertiesList"));
 const Notifications = lazy(() => import("@/screens/dashboard/Notifications"));
 const NotificationDetail = lazy(() => import("@/screens/dashboard/NotificationDetail"));
-const PlaceholderPage = lazy(() => import("@/screens/dashboard/PlaceholderPage").then((m) => ({ default: m.PlaceholderPage })));
 const DashboardLayout = lazy(() => import("@/components/dashboard").then((m) => ({ default: m.DashboardLayout })));
 const Settings = lazy(() => import("@/screens/settings/settings"));
 const Clients = lazy(() => import("@/screens/clients/clients"));
@@ -25,8 +24,12 @@ const Messages = lazy(() => import("@/screens/dashboard/Messages"));
 const Calendar = lazy(() => import("@/screens/dashboard/Calendar"));
 const Leads = lazy(() => import("@/screens/dashboard/Leads"));
 const Discounts = lazy(() => import("@/screens/dashboard/Discounts"));
+const Transactions = lazy(() => import("@/screens/dashboard/Transactions"));
 const Analytics = lazy(() => import("@/screens/dashboard/Analytics"));
 const Agents = lazy(() => import("@/screens/dashboard/Agents"));
+const HelpCenter = lazy(() => import("@/screens/dashboard/HelpCenter"));
+const Feedback = lazy(() => import("@/screens/dashboard/Feedback"));
+const Welcome = lazy(() => import("@/screens/Welcome"));
 const NotFound = lazy(() => import("@/screens/NotFound"));
 
 function PageFallback() {
@@ -45,7 +48,14 @@ export default function App() {
         <BrowserRouter>
           <Suspense fallback={<PageFallback />}>
             <Routes>
-              <Route path="/" element={<Navigate to="/auth/login" replace />} />
+              <Route
+                path="/"
+                element={
+                  <PublicRoute redirectTo="/dashboard">
+                    <Welcome />
+                  </PublicRoute>
+                }
+              />
 
               <Route
                 path="/auth/login"
@@ -196,7 +206,7 @@ export default function App() {
                 path="/dashboard/transactions"
                 element={
                   <ProtectedRoute>
-                    <PlaceholderPage title="Transactions" />
+                    <Transactions />
                   </ProtectedRoute>
                 }
               />
@@ -222,7 +232,7 @@ export default function App() {
                 path="/dashboard/help"
                 element={
                   <ProtectedRoute>
-                    <PlaceholderPage title="Help Center" />
+                    <HelpCenter />
                   </ProtectedRoute>
                 }
               />
@@ -230,7 +240,7 @@ export default function App() {
                 path="/dashboard/feedback"
                 element={
                   <ProtectedRoute>
-                    <PlaceholderPage title="Feedback" />
+                    <Feedback />
                   </ProtectedRoute>
                 }
               />

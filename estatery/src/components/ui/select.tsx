@@ -13,6 +13,7 @@ type SelectContextValue = {
   open: boolean;
   setOpen: (open: boolean) => void;
   triggerRef: React.RefObject<HTMLButtonElement | null>;
+  contentRef: React.RefObject<HTMLDivElement | null>;
 };
 
 const SelectContext = React.createContext<SelectContextValue | null>(null);
@@ -43,6 +44,7 @@ function Select({
   const [open, setOpen] = React.useState(false);
   const labelsRef = React.useRef<Record<string, string>>({});
   const triggerRef = React.useRef<HTMLButtonElement | null>(null);
+  const contentRef = React.useRef<HTMLDivElement | null>(null);
 
   const isControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : uncontrolledValue;
@@ -80,6 +82,7 @@ function Select({
       open,
       setOpen,
       triggerRef,
+      contentRef,
     }),
     [value, displayLabel, handleValueChange, registerLabel, open]
   );
@@ -95,14 +98,14 @@ type SelectTriggerProps = React.HTMLAttributes<HTMLButtonElement>;
 
 const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(
   ({ className, children, ...props }, ref) => {
-    const { value, open, setOpen, triggerRef } = useSelectContext();
+    const { value, open, setOpen, triggerRef, contentRef } = useSelectContext();
 
     React.useEffect(() => {
       const handleClickOutside = (e: MouseEvent) => {
-        if (
-          triggerRef.current &&
-          !triggerRef.current.contains(e.target as Node)
-        ) {
+        const target = e.target as Node;
+        const inTrigger = triggerRef.current?.contains(target);
+        const inContent = contentRef.current?.contains(target);
+        if (!inTrigger && !inContent) {
           setOpen(false);
         }
       };
@@ -110,7 +113,7 @@ const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
       }
-    }, [open, setOpen, triggerRef]);
+    }, [open, setOpen, triggerRef, contentRef]);
 
     return (
       <button
@@ -146,7 +149,7 @@ type SelectContentProps = React.HTMLAttributes<HTMLDivElement>;
 
 const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(
   ({ className, children, ...props }, ref) => {
-    const { open, triggerRef } = useSelectContext();
+    const { open, triggerRef, contentRef } = useSelectContext();
     const [position, setPosition] = React.useState<{
       top: number;
       left: number;
@@ -183,7 +186,11 @@ const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(
 
     const content = (
       <div
-        ref={ref}
+        ref={(node) => {
+          (contentRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }}
         className={cn(
           "fixed z-[100] max-h-60 min-w-[8rem] overflow-auto rounded-lg border border-[#e2e8f0] bg-white p-1 shadow-lg",
           className
