@@ -36,8 +36,8 @@ function saveProperties(props: Property[]) {
 type PropertiesContextValue = {
   properties: Property[];
   addProperty: (property: Omit<Property, "id">) => void;
-  getPropertyById: (id: string) => Property | undefined;
-  getOtherProperties: (excludeId: string, limit?: number) => Property[];
+  getPropertyById: (id: string | number) => Property | undefined;
+  getOtherProperties: (excludeId: string | number, limit?: number) => Property[];
 };
 
 const PropertiesContext = React.createContext<PropertiesContextValue | null>(null);
@@ -70,13 +70,13 @@ export function PropertiesProvider({ children }: { children: React.ReactNode }) 
   }, []);
 
   const getPropertyById = React.useCallback(
-    (id: string) => properties.find((p) => p.id === id),
+    (id: string | number) => properties.find((p) => String(p.id) === String(id)),
     [properties]
   );
 
   const getOtherProperties = React.useCallback(
-    (excludeId: string, limit = 6) =>
-      properties.filter((p) => p.id !== excludeId).slice(0, limit),
+    (excludeId: string | number, limit = 6) =>
+      properties.filter((p) => String(p.id) !== String(excludeId)).slice(0, limit),
     [properties]
   );
 

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import type { Property } from "@/lib/properties";
+import { PROPERTY_TYPES } from "@/lib/properties";
 import { AddPropertyLocationStep } from "./AddProperty2";
 import { AddPropertyDetailsStep } from "./AddProperty3";
 import { AddPropertyMediaStep } from "./AddProperty4";
@@ -44,21 +45,21 @@ export function AddPropertyModal({ open, onClose, onPropertyAdded }: AddProperty
   const [title, setTitle] = React.useState("Modern 3-Bedroom Family Home in Suburban Area");
   const [description, setDescription] = React.useState("");
   const [descLength, setDescLength] = React.useState(50);
-  const [propertyType, setPropertyType] = React.useState("House");
-  const [status, setStatus] = React.useState("For Sale");
+  const [propertyType, setPropertyType] = React.useState<Property["property_type"]>("house");
   const [price, setPrice] = React.useState("₵350,000");
   const [rentalPeriod, setRentalPeriod] = React.useState("1 year");
-  const [listingDate, setListingDate] = React.useState("2025-07-22");
   const [contactName, setContactName] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [agent, setAgent] = React.useState("");
   const [showSaveDialog, setShowSaveDialog] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
-  const [location, setLocation] = React.useState("");
-  const [beds, setBeds] = React.useState<number | undefined>();
-  const [baths, setBaths] = React.useState<number | undefined>();
-  const [sqft, setSqft] = React.useState<string | undefined>();
+  const [address, setAddress] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [country, setCountry] = React.useState("USA");
+  const [bedrooms, setBedrooms] = React.useState<number>(3);
+  const [bathrooms, setBathrooms] = React.useState<number>(2);
+  const [area, setArea] = React.useState<number>(2000);
   const [imageUrl, setImageUrl] = React.useState<string>("/images/property-1.webp");
 
   /* Track description length for step 1 (max 200 chars) */
@@ -79,29 +80,31 @@ export function AddPropertyModal({ open, onClose, onPropertyAdded }: AddProperty
     if (field === "agent") setAgent(value);
   };
 
-  /* Build property object from form state, call onPropertyAdded, reset modal */
+  /* Build API-aligned property object, call onPropertyAdded, reset modal */
   const handleSave = () => {
     setIsSaving(true);
-
+    const priceVal = price.replace(/\/month$/, "").trim().replace(/[^0-9.]/g, "") || "0";
+    const monthlyPrice = priceVal;
+    const dailyPrice = (parseFloat(priceVal) / 30).toFixed(2);
+    const now = new Date().toISOString();
     const newProperty: Omit<Property, "id"> = {
-      name: title,
-      location: location || "Address to be added",
-      price: price.replace(/\/month$/, "").trim() || price,
-      period: status === "For Rent" ? "/month" : "/month",
-      rentalPeriod: status === "For Rent" ? rentalPeriod : undefined,
-      image: imageUrl,
-      description,
-      beds,
-      baths,
-      sqft,
-      type: status === "For Rent" ? "Rent" : "Sale",
-      status: "Available",
-      views: 0,
-      lastUpdated: new Date().toLocaleDateString("en-US", {
-        month: "long",
-        day: "2-digit",
-        year: "numeric",
-      }),
+      title,
+      address: address || "Address to be added",
+      city: city || "TBD",
+      country: country || "USA",
+      description: description || "",
+      daily_price: dailyPrice,
+      monthly_price: monthlyPrice,
+      currency: "ghs",
+      bedrooms: bedrooms ?? 0,
+      bathrooms: bathrooms ?? 0,
+      area: area ?? 0,
+      property_type: propertyType,
+      status: "available",
+      primary_image: { image: imageUrl },
+      min_stay_months: rentalPeriod === "6 months" ? 6 : rentalPeriod === "2 years" ? 24 : 12,
+      created_at: now,
+      updated_at: now,
     };
 
     setTimeout(() => {
@@ -110,10 +113,12 @@ export function AddPropertyModal({ open, onClose, onPropertyAdded }: AddProperty
       setShowSaveDialog(false);
       onClose();
       setStep(1);
-      setLocation("");
-      setBeds(undefined);
-      setBaths(undefined);
-      setSqft(undefined);
+      setAddress("");
+      setCity("");
+      setCountry("USA");
+      setBedrooms(3);
+      setBathrooms(2);
+      setArea(2000);
       setImageUrl("/images/property-1.webp");
     }, 700);
   };
@@ -207,111 +212,72 @@ export function AddPropertyModal({ open, onClose, onPropertyAdded }: AddProperty
                 <Label htmlFor="property-type" className="text-[#1e293b]">
                   Property Type
                 </Label>
-                <Select value={propertyType} onValueChange={setPropertyType}>
+                <Select value={propertyType} onValueChange={(v) => setPropertyType(v as Property["property_type"])}>
                   <SelectTrigger id="property-type" className="border-[#e2e8f0] bg-white text-[#1e293b]">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="House">House</SelectItem>
-                    <SelectItem value="Apartment">Apartment</SelectItem>
-                    <SelectItem value="Condo">Condo</SelectItem>
-                    <SelectItem value="Land">Land</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="status" className="text-[#1e293b]">
-                  Status
-                </Label>
-                <Select value={status} onValueChange={setStatus}>
-                  <SelectTrigger id="status" className="border-[#e2e8f0] bg-white text-[#1e293b]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="For Sale">For Sale</SelectItem>
-                    <SelectItem value="For Rent">For Rent</SelectItem>
+                    {PROPERTY_TYPES.map((t) => (
+                      <SelectItem key={t} value={t}>
+                        {t.charAt(0).toUpperCase() + t.slice(1)}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="price" className="text-[#1e293b]">
-                    {status === "For Rent" ? "Rent Price" : "Price"}
+                    Monthly Price (₵)
                   </Label>
                   <Input
                     id="price"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    placeholder={status === "For Rent" ? "₵2,500/month" : "₵350,000"}
+                    placeholder="₵2,500"
                     className="border-[#e2e8f0] bg-white text-[#1e293b]"
                   />
                 </div>
-                {status === "For Rent" ? (
-                  <div className="space-y-2">
-                    <Label htmlFor="rental-period" className="text-[#1e293b]">
-                      Rental Period
-                    </Label>
-                    <Select value={rentalPeriod} onValueChange={setRentalPeriod}>
-                      <SelectTrigger id="rental-period" className="border-[#e2e8f0] bg-white text-[#1e293b]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="3 months">3 months</SelectItem>
-                        <SelectItem value="6 months">6 months</SelectItem>
-                        <SelectItem value="1 year">1 year</SelectItem>
-                        <SelectItem value="2 years">2 years</SelectItem>
-                        <SelectItem value="3 years">3 years</SelectItem>
-                        <SelectItem value="5 years">5 years</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-[#64748b]">The house is available for this duration</p>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <Label htmlFor="listing-date" className="text-[#1e293b]">
-                      Listing Date
-                    </Label>
-                    <Input
-                      id="listing-date"
-                      type="date"
-                      value={listingDate}
-                      onChange={(e) => setListingDate(e.target.value)}
-                      className="border-[#e2e8f0] bg-white text-[#1e293b]"
-                    />
-                  </div>
-                )}
-              </div>
-              {status === "For Rent" && (
                 <div className="space-y-2">
-                  <Label htmlFor="listing-date-rent" className="text-[#1e293b]">
-                    Listing Date
+                  <Label htmlFor="rental-period" className="text-[#1e293b]">
+                    Min Stay
                   </Label>
-                  <Input
-                    id="listing-date-rent"
-                    type="date"
-                    value={listingDate}
-                    onChange={(e) => setListingDate(e.target.value)}
-                    className="w-full max-w-[200px] border-[#e2e8f0] bg-white text-[#1e293b]"
-                  />
+                  <Select value={rentalPeriod} onValueChange={setRentalPeriod}>
+                    <SelectTrigger id="rental-period" className="border-[#e2e8f0] bg-white text-[#1e293b]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="6 months">6 months</SelectItem>
+                      <SelectItem value="1 year">1 year</SelectItem>
+                      <SelectItem value="2 years">2 years</SelectItem>
+                      <SelectItem value="3 years">3 years</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-              )}
+              </div>
             </div>
           )}
-          {/* Step 2: Location Details */}
+          {/* Step 2: Location Details (API: address, city, country) */}
           {step === 2 && (
             <AddPropertyLocationStep
-              location={location}
-              onLocationChange={setLocation}
+              address={address}
+              city={city}
+              country={country}
+              onLocationChange={(data) => {
+                setAddress(data.address);
+                setCity(data.city);
+                setCountry(data.country);
+              }}
             />
           )}
           {step === 3 && (
             <AddPropertyDetailsStep
-              beds={beds}
-              baths={baths}
-              sqft={sqft}
-              onBedsChange={setBeds}
-              onBathsChange={setBaths}
-              onSqftChange={setSqft}
+              bedrooms={bedrooms}
+              bathrooms={bathrooms}
+              area={area}
+              onBedroomsChange={setBedrooms}
+              onBathroomsChange={setBathrooms}
+              onAreaChange={setArea}
             />
           )}
           {step === 4 && (

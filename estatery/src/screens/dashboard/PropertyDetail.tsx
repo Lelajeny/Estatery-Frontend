@@ -13,6 +13,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useSidebarCollapse } from "@/hooks/use-sidebar-collapse";
 import { Sidebar, TopBar, LogoutConfirmDialog } from "@/components/dashboard";
 import { useProperties } from "@/contexts/PropertiesContext";
+import {
+  getPropertyImage,
+  getPropertyLocation,
+  getPropertyPriceDisplay,
+  getRentalPeriodLabel,
+} from "@/lib/properties";
 
 export default function PropertyDetail() {
   const { id } = useParams<{ id: string }>();
@@ -96,44 +102,41 @@ export default function PropertyDetail() {
             <div className="rounded-xl border border-[#e2e8f0] bg-white shadow-sm overflow-hidden">
               <div className="aspect-[16/9] max-h-[420px] w-full overflow-hidden bg-[#f1f5f9]">
                 <img
-                  src={property.image}
-                  alt={property.name}
+                  src={getPropertyImage(property)}
+                  alt={property.title}
                   className="h-full w-full object-cover"
                 />
               </div>
               <div className="p-6 sm:p-8">
-                <h1 className="text-2xl font-bold text-[#1e293b] sm:text-3xl">{property.name}</h1>
+                <h1 className="text-2xl font-bold text-[#1e293b] sm:text-3xl">{property.title}</h1>
                 <p className="mt-2 flex items-center gap-1.5 text-[#64748b]">
                   <MapPin className="size-4 shrink-0" />
-                  {property.location}
+                  {getPropertyLocation(property)}
                 </p>
                 <p className="mt-4 text-2xl font-bold text-[var(--logo)]">
-                  {property.price}
-                  <span className="text-base font-normal text-[#64748b]">{property.period}</span>
+                  {getPropertyPriceDisplay(property)}
                 </p>
-                {property.rentalPeriod && (
-                  <p className="mt-1 text-sm text-[#64748b]">
-                    Rental period: <span className="font-medium text-[#1e293b]">{property.rentalPeriod}</span>
-                  </p>
-                )}
-                {(property.beds != null || property.baths != null || property.sqft) && (
+                <p className="mt-1 text-sm text-[#64748b]">
+                  Rental period: <span className="font-medium text-[#1e293b]">{getRentalPeriodLabel(property)}</span>
+                </p>
+                {(property.bedrooms != null || property.bathrooms != null || property.area != null) && (
                   <div className="mt-4 flex flex-wrap gap-6 text-sm text-[#64748b]">
-                    {property.beds != null && (
+                    {property.bedrooms != null && (
                       <span className="flex items-center gap-1.5">
                         <Bed className="size-4" />
-                        {property.beds} Beds
+                        {property.bedrooms} Beds
                       </span>
                     )}
-                    {property.baths != null && (
+                    {property.bathrooms != null && (
                       <span className="flex items-center gap-1.5">
                         <Bath className="size-4" />
-                        {property.baths} Baths
+                        {property.bathrooms} Baths
                       </span>
                     )}
-                    {property.sqft && (
+                    {property.area != null && (
                       <span className="flex items-center gap-1.5">
                         <Square className="size-4" />
-                        {property.sqft} sq ft
+                        {property.area} sq ft
                       </span>
                     )}
                   </div>
@@ -157,19 +160,18 @@ export default function PropertyDetail() {
                     <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
                     <div className="relative aspect-[4/3] overflow-hidden bg-[#f1f5f9]">
                       <img
-                        src={prop.image}
-                        alt={prop.name}
+                        src={getPropertyImage(prop)}
+                        alt={prop.title}
                         className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
                       />
                     </div>
                     <div className="relative p-4">
                       <p className="font-medium text-[#1e293b] group-hover:text-[var(--logo)] truncate">
-                        {prop.name}
+                        {prop.title}
                       </p>
-                      <p className="mt-0.5 truncate text-sm text-[#64748b]">{prop.location}</p>
+                      <p className="mt-0.5 truncate text-sm text-[#64748b]">{getPropertyLocation(prop)}</p>
                       <p className="mt-2 text-sm font-medium text-[#1e293b]">
-                        {prop.price}
-                        <span className="font-normal text-[#64748b]"> per month</span>
+                        {getPropertyPriceDisplay(prop)}
                       </p>
                     </div>
                   </Link>

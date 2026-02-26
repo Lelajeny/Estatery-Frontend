@@ -8,28 +8,28 @@ import * as React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
+/** API-aligned: bedrooms, bathrooms, area (m² or sqft) */
 type AddPropertyDetailsStepProps = {
-  beds?: number;
-  baths?: number;
-  sqft?: string;
-  onBedsChange?: (v: number | undefined) => void;
-  onBathsChange?: (v: number | undefined) => void;
-  onSqftChange?: (v: string | undefined) => void;
+  bedrooms?: number;
+  bathrooms?: number;
+  area?: number;
+  onBedroomsChange?: (v: number) => void;
+  onBathroomsChange?: (v: number) => void;
+  onAreaChange?: (v: number) => void;
 };
 
-// Step 3: Property Details
 export function AddPropertyDetailsStep({
-  beds,
-  baths,
-  sqft,
-  onBedsChange,
-  onBathsChange,
-  onSqftChange,
+  bedrooms = 0,
+  bathrooms = 0,
+  area = 0,
+  onBedroomsChange,
+  onBathroomsChange,
+  onAreaChange,
 }: AddPropertyDetailsStepProps = {}) {
   const [landArea, setLandArea] = React.useState("");
-  const [buildingArea, setBuildingArea] = React.useState(sqft ?? "");
-  const [bedrooms, setBedrooms] = React.useState(beds != null ? String(beds) : "");
-  const [bathrooms, setBathrooms] = React.useState(baths != null ? String(baths) : "");
+  const [buildingArea, setBuildingArea] = React.useState(area ? String(area) : "");
+  const [bedroomsVal, setBedroomsVal] = React.useState(bedrooms ? String(bedrooms) : "");
+  const [bathroomsVal, setBathroomsVal] = React.useState(bathrooms ? String(bathrooms) : "");
   const [floors, setFloors] = React.useState("");
   const [yearBuilt, setYearBuilt] = React.useState("");
   const [furnishing, setFurnishing] = React.useState("");
@@ -55,16 +55,19 @@ export function AddPropertyDetailsStep({
 
         <div className="space-y-2">
           <Label htmlFor="building-area" className="text-[#1e293b]">
-            Building Area (m²)
+            Area (m² / sq ft)
           </Label>
           <Input
             id="building-area"
+            type="number"
             value={buildingArea}
             onChange={(e) => {
-              setBuildingArea(e.target.value);
-              onSqftChange?.(e.target.value || undefined);
+              const v = e.target.value;
+              setBuildingArea(v);
+              const n = parseInt(v, 10);
+              onAreaChange?.(isNaN(n) ? 0 : n);
             }}
-            placeholder="Placeholder"
+            placeholder="e.g. 2000"
             className="border-[#e2e8f0] bg-white text-[#1e293b]"
           />
         </div>
@@ -75,13 +78,15 @@ export function AddPropertyDetailsStep({
           </Label>
           <Input
             id="bedrooms"
-            value={bedrooms}
+            type="number"
+            value={bedroomsVal}
             onChange={(e) => {
-              setBedrooms(e.target.value);
-              const n = parseInt(e.target.value, 10);
-              onBedsChange?.(isNaN(n) ? undefined : n);
+              const v = e.target.value;
+              setBedroomsVal(v);
+              const n = parseInt(v, 10);
+              onBedroomsChange?.(isNaN(n) ? 0 : n);
             }}
-            placeholder="Placeholder"
+            placeholder="e.g. 3"
             className="border-[#e2e8f0] bg-white text-[#1e293b]"
           />
         </div>
@@ -92,13 +97,15 @@ export function AddPropertyDetailsStep({
           </Label>
           <Input
             id="bathrooms"
-            value={bathrooms}
+            type="number"
+            value={bathroomsVal}
             onChange={(e) => {
-              setBathrooms(e.target.value);
-              const n = parseInt(e.target.value, 10);
-              onBathsChange?.(isNaN(n) ? undefined : n);
+              const v = e.target.value;
+              setBathroomsVal(v);
+              const n = parseInt(v, 10);
+              onBathroomsChange?.(isNaN(n) ? 0 : n);
             }}
-            placeholder="Placeholder"
+            placeholder="e.g. 2"
             className="border-[#e2e8f0] bg-white text-[#1e293b]"
           />
         </div>

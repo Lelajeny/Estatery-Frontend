@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { Pagination } from "@/components/ui";
 import { useProperties } from "@/contexts/PropertiesContext";
 import { clientsTableData } from "@/lib/clients";
+import { getPropertyLocation } from "@/lib/properties";
 
 type Range = "7d" | "30d" | "90d";
 
@@ -274,19 +275,15 @@ export default function Analytics() {
                     {pageProperties.map((p) => (
                       <tr key={p.id} className="border-t border-[#e2e8f0] hover:bg-[#f8fafc]">
                         <td className="px-4 py-2 align-middle text-sm text-[#0f172a]">
-                          {p.name}
+                          {p.title}
                         </td>
                         <td className="px-4 py-2 align-middle text-xs text-[#64748b]">
-                          {p.location}
+                          {getPropertyLocation(p)}
                         </td>
-                        <td className="px-4 py-2 align-middle text-xs text-[#0f172a]">
-                          {p.views ?? 0}
-                        </td>
-                        <td className="px-4 py-2 align-middle text-xs text-[#0f172a]">
-                          {Math.round((p.views ?? 0) * 0.12)}
-                        </td>
+                        <td className="px-4 py-2 align-middle text-xs text-[#0f172a]">—</td>
+                        <td className="px-4 py-2 align-middle text-xs text-[#0f172a]">—</td>
                         <td className="px-4 py-2 align-middle text-xs text-[#94a3b8]">
-                          {p.lastUpdated}
+                          {p.updated_at ?? "—"}
                         </td>
                       </tr>
                     ))}

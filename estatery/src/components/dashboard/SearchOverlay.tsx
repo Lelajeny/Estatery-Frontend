@@ -27,7 +27,7 @@ export function SearchOverlay({ open, onClose, initialQuery = "" }: SearchOverla
   const listRef = React.useRef<HTMLDivElement>(null);
 
   const propertyList = React.useMemo(
-    () => properties.map((p) => ({ id: p.id, name: p.name, location: p.location })),
+    () => properties.map((p) => ({ id: p.id, title: p.title, address: p.address, city: p.city, country: p.country })),
     [properties]
   );
   const results = React.useMemo(() => searchAll(query, propertyList), [query, propertyList]);

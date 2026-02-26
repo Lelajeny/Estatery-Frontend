@@ -348,7 +348,7 @@ export default function Leads() {
                                 }
                                 className="inline-flex max-w-full items-center gap-1 truncate text-[var(--logo)] transition-colors hover:text-[var(--logo-hover)]"
                               >
-                                <span className="truncate">{property.name}</span>
+                                <span className="truncate">{property.title}</span>
                                 <ArrowUpRight className="size-3 shrink-0" />
                               </button>
                             ) : (

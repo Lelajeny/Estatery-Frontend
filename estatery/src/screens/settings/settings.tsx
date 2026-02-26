@@ -35,11 +35,12 @@ const SETTINGS_NAV = [
 
 function copyProfile(p: UserProfile): UserProfile {
   return {
-    name: p.name,
-    role: p.role,
+    id: p.id,
+    username: p.username,
     email: p.email,
     phone: p.phone,
     avatar: p.avatar ?? null,
+    user_type: p.user_type,
   };
 }
 

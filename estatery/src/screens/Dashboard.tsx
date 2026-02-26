@@ -21,6 +21,8 @@ import {
   RecentPayments,
 } from "@/components/dashboard";
 import { useProperties } from "@/contexts/PropertiesContext";
+import { useUserProfile } from "@/contexts/UserProfileContext";
+import { getPropertyLocation, getPropertyPriceDisplay } from "@/lib/properties";
 
 export default function Dashboard() {
   const { collapsed: sidebarCollapsed, onToggle } = useSidebarCollapse();
@@ -29,6 +31,7 @@ export default function Dashboard() {
   const [refreshing, setRefreshing] = React.useState(false);
   const { logout } = useAuth();
   const { properties } = useProperties();
+  const { profile } = useUserProfile();
   const navigate = useNavigate();
 
   /* Simulate refresh: show loading, update lastUpdated, clear after 800ms */
@@ -47,15 +50,22 @@ export default function Dashboard() {
       ["Total Properties Rent", "573", "+5.7%"],
     ];
 
-    const paymentHeader = ["Payment ID", "Date", "Property", "Address", "Customer", "Type", "Amount", "Status"];
+    const paymentHeader = ["Payment ID", "Due Date", "Property", "Customer", "Type", "Amount", "Status"];
     const payments = [
-      ["23487", "July 08, 2025", "Oak Grove Estates", "123 Oak St", "David Martinez", "Rent", "₵293.00", "Pending"],
-      ["23488", "July 09, 2025", "Maple Heights", "456 Maple Ave", "Sarah Johnson", "Rent", "₵320.00", "Failed"],
-      ["23489", "July 10, 2025", "Pine View", "789 Pine Rd", "Mike Chen", "Sale", "₵15,200.00", "Completed"],
+      ["23487", "2025-07-08", "Oak Grove Estates", "David Martinez", "Rent", "293.00", "pending"],
+      ["23488", "2025-07-09", "Maple Heights", "Sarah Johnson", "Rent", "320.00", "cancelled"],
+      ["23489", "2025-07-10", "Pine View", "Mike Chen", "Deposit", "15200.00", "paid"],
     ];
 
-    const propertyHeader = ["ID", "Name", "Location", "Price", "Type", "Status"];
-    const propertyRows = properties.map((p) => [p.id, p.name, p.location, p.price, p.type ?? "", p.status ?? ""]);
+    const propertyHeader = ["ID", "Title", "Location", "Price", "Type", "Status"];
+    const propertyRows = properties.map((p) => [
+      p.id,
+      p.title,
+      getPropertyLocation(p),
+      getPropertyPriceDisplay(p),
+      p.property_type ?? "",
+      p.status ?? "",
+    ]);
 
     const csvSections = [
       ["Dashboard Overview"],
@@ -108,7 +118,7 @@ export default function Dashboard() {
             {/* Dashboard header */}
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-[#1e293b]">Welcome back, Sarah!</h1>
+                <h1 className="text-2xl font-bold text-[#1e293b]">Welcome back, {profile.username || "User"}!</h1>
                 <p className="mt-1 text-[#64748b]">
                   Track and manage your property dashboard efficiently.
                 </p>

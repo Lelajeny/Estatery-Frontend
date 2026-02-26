@@ -20,14 +20,12 @@ export default function PropertiesList() {
   const [addModalOpen, setAddModalOpen] = React.useState(false);
   const { properties, addProperty } = useProperties();
 
-  /* Prefer properties with views/lastUpdated for table; fallback to first 5+ */
-  const tableProperties = properties.filter(
-    (p) => p.views != null && p.lastUpdated
-  ) as Property[];
+  /* Prefer properties with updated_at for table; fallback to first 5+ */
+  const tableProperties = properties.filter((p) => p.updated_at != null);
   const displayProperties: Property[] =
-    tableProperties.length > 0 ? tableProperties : (properties.slice(0, Math.max(5, properties.length)) as Property[]);
+    tableProperties.length > 0 ? tableProperties : properties.slice(0, Math.max(5, properties.length));
 
-  /* Add new property to context; modal assigns ID */
+  /* Add new property to context; ID assigned when API/create responds */
   const handlePropertyAdded = React.useCallback(
     (property: Omit<Property, "id">) => {
       addProperty(property);
