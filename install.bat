@@ -1,13 +1,24 @@
 @echo off
 echo Installing Estatery Frontend dependencies...
+echo.
+echo [1/2] Installing admin app (estatery)...
 cd estatery
 call npm install
-if %errorlevel% equ 0 (
-  echo.
-  echo Dependencies installed successfully.
-  echo Run "npm run dev" in the estatery folder to start the development server.
-) else (
-  echo.
-  echo Installation failed. Make sure Node.js and npm are installed.
+if %errorlevel% neq 0 (
+  echo Installation failed.
   exit /b 1
 )
+cd ..
+echo.
+echo [2/2] Installing website (Estatery-website)...
+cd Estatery-website
+call npm install
+if %errorlevel% neq 0 (
+  echo Installation failed.
+  exit /b 1
+)
+cd ..
+echo.
+echo Dependencies installed successfully.
+echo   - Admin: npm run dev:admin
+echo   - Website: npm run dev:website
